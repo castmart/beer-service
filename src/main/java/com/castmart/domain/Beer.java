@@ -3,10 +3,12 @@ package com.castmart.domain;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Getter
@@ -28,6 +30,7 @@ public class Beer {
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdDate;
+    @UpdateTimestamp
     private Timestamp lastModifiedDate;
     private String name;
     private String beerStyle;

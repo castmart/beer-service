@@ -1,5 +1,6 @@
 package com.castmart.web.controller;
 
+import com.castmart.domain.Beer;
 import com.castmart.web.model.BeerDTO;
 import com.castmart.web.model.BeerStyleEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,8 +39,8 @@ class BeerControllerTest {
 
     @Test
     void saveNewBeer() throws Exception {
-        BeerDTO beerDTO = BeerDTO.builder().id(UUID.randomUUID()).beerName("My beer").build();
-        String serialized = objectMapper.writeValueAsString(beerDTO);
+
+        String serialized = objectMapper.writeValueAsString(validBeerDTO());
 
         mockMvc.perform(
                 post(RESOURCE)
@@ -65,5 +66,35 @@ class BeerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(beerDTO)))
                 .andExpect(status().isNoContent());
+    }
+
+//    @Test
+//    void testValidationErrorHandler() throws Exception {
+//
+//        String serialized = objectMapper.writeValueAsString(invalidDTO());
+//
+//        mockMvc.perform(
+//                post(RESOURCE)
+//                        .content(serialized)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isCreated());
+//    }
+
+    public BeerDTO validBeerDTO() {
+        return BeerDTO.builder()
+                .beerName("Coronita")
+                .beerStyle(BeerStyleEnum.LAGER)
+                .price(new BigDecimal(11.11))
+                .upc(881188L)
+                .build();
+    }
+
+    public BeerDTO invalidDTO() {
+        return BeerDTO.builder()
+                .beerName("Coronita")
+                .beerStyle(BeerStyleEnum.LAGER)
+                .price(new BigDecimal(-11.11))
+                .upc(881188L)
+                .build();
     }
 }
